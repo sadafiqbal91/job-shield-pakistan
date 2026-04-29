@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobShield Pakistan - Fake Job Scam Detector</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <span class="logo-icon">🛡️</span>
+                <div>
+                    <h1>JobShield Pakistan</h1>
+                    <p class="subtitle" id="tagline-text">Fake Job Scam Detector</p>
+                </div>
+            </div>
+            <div class="language-toggle">
+                <button id="lang-en" class="active">EN</button>
+                <button id="lang-ur">UR</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="info-card">
+                <p id="instruction-text">Paste any job advertisement text or message below. Our system will analyze it for common scam indicators in Pakistan.</p>
+            </div>
+
+            <div class="input-section">
+                <textarea id="job-text" placeholder="Paste the job description or WhatsApp message here..." rows="8"></textarea>
+                <div class="action-buttons">
+                    <button id="analyze-btn" class="primary-btn">Analyze Job Ad</button>
+                    <button id="clear-btn" class="secondary-btn">Clear</button>
+                </div>
+            </div>
+
+            <div id="result-section" class="result-section hidden">
+                <div class="result-header">
+                    <h2 id="result-title">Analysis Result</h2>
+                    <div id="risk-badge" class="risk-badge"></div>
+                </div>
+                
+                <div class="score-container">
+                    <div class="progress-bar">
+                        <div id="score-fill" class="score-fill"></div>
+                    </div>
+                    <p id="score-text" class="score-text">Risk Score: 0/100</p>
+                </div>
+
+                <div class="warnings-container">
+                    <h3 id="warnings-title">Identified Red Flags:</h3>
+                    <ul id="warnings-list">
+                        <!-- Warnings will be injected here -->
+                    </ul>
+                </div>
+                
+                <div id="safe-message" class="safe-message hidden">
+                    <p>No obvious scam indicators found. However, always exercise caution and verify company details independently.</p>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Built for the community. Stay safe from online fraud.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
