@@ -12,7 +12,10 @@ const content = {
         riskScore: "Risk Score",
         safeBadge: "Safe",
         warningBadge: "Suspicious",
-        dangerBadge: "Scam"
+        dangerBadge: "Scam",
+        reportBtn: "Report This Scam",
+        reportInstruction: "Is this a scam? Help others by reporting it to our database.",
+        reportSuccess: "Thanks! This scam has been reported to our live database.",
     },
     ur: {
         tagline: "Jali Job Scam Detector",
@@ -26,9 +29,27 @@ const content = {
         riskScore: "Risk Score",
         safeBadge: "Mehfooz (Safe)",
         warningBadge: "Mashkook (Suspicious)",
-        dangerBadge: "Dhoka (Scam)"
+        dangerBadge: "Dhoka (Scam)",
+        reportBtn: "Is Scam ko Report Karein",
+        reportInstruction: "Kya ye ek dhoka hai? Isay database mein report kar ke doosron ki madad karein.",
+        reportSuccess: "Shukriya! Ye scam humare live database mein report ho gaya hai.",
     }
 };
+
+// --- Firebase Configuration ---
+const firebaseConfig = {
+  apiKey: "AIzaSyD71JLI4Zk1x2GcSxvraVqd1HPAZbedPis",
+  authDomain: "jobshield-pakistan.firebaseapp.com",
+  projectId: "jobshield-pakistan",
+  storageBucket: "jobshield-pakistan.firebasestorage.app",
+  messagingSenderId: "236422579240",
+  appId: "1:236422579240:web:63b02d308cf31741d6a11d",
+  measurementId: "G-C5KFMG3N8X"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 // Scam indicators and their weights (score from 0 to 100)
 const scamKeywords = [
@@ -57,6 +78,9 @@ const warningsList = document.getElementById('warnings-list');
 const safeMessage = document.getElementById('safe-message');
 const langEnBtn = document.getElementById('lang-en');
 const langUrBtn = document.getElementById('lang-ur');
+const reportContainer = document.getElementById('report-container');
+const reportBtn = document.getElementById('report-btn');
+const reportInstruction = document.getElementById('report-instruction');
 
 let currentLang = 'en';
 let lastAnalysis = null; // Store last results to re-render on language switch
@@ -83,6 +107,12 @@ function updateLanguage(lang) {
     document.getElementById('result-title').textContent = content[lang].resultTitle;
     document.getElementById('warnings-title').textContent = content[lang].warningsTitle;
     safeMessage.querySelector('p').textContent = content[lang].safeMessage;
+    
+    // Update Report section
+    reportInstruction.textContent = content[lang].reportInstruction;
+    if (!reportBtn.classList.contains('reported')) {
+        reportBtn.textContent = content[lang].reportBtn;
+    }
 
     // Re-render results if there's an active analysis
     if (lastAnalysis && !resultSection.classList.contains('hidden')) {
@@ -149,9 +179,16 @@ function renderResults(score, warnings) {
         scoreFill.style.backgroundColor = 'var(--safe-color)';
         safeMessage.classList.remove('hidden');
         document.querySelector('.warnings-container').classList.add('hidden');
+        reportContainer.classList.add('hidden');
     } else {
         safeMessage.classList.add('hidden');
         document.querySelector('.warnings-container').classList.remove('hidden');
+        reportContainer.classList.remove('hidden');
+        
+        // Reset report button
+        reportBtn.classList.remove('reported');
+        reportBtn.disabled = false;
+        reportBtn.textContent = content[currentLang].reportBtn;
 
         if (score < 50) {
             riskBadge.textContent = content[currentLang].warningBadge;
@@ -171,3 +208,29 @@ function renderResults(score, warnings) {
         });
     }
 }
+
+// Handle Report to Firebase
+reportBtn.addEventListener('click', () => {
+    const text = jobText.value.trim();
+    
+    reportBtn.disabled = true;
+    reportBtn.textContent = "...";
+
+    db.collection("reported_scams").add({
+        text: text,
+        score: lastAnalysis.score,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        language: currentLang
+    })
+    .then(() => {
+        reportBtn.textContent = "✓ Reported";
+        reportBtn.classList.add('reported');
+        alert(content[currentLang].reportSuccess);
+    })
+    .catch((error) => {
+        console.error("Error reporting scam: ", error);
+        reportBtn.disabled = false;
+        reportBtn.textContent = content[currentLang].reportBtn;
+        alert("Error: Could not save report. Please try again.");
+    });
+});

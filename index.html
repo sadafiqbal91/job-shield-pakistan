@@ -6,6 +6,10 @@
     <title>JobShield Pakistan - Fake Job Scam Detector</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs (Compat Version for easy CDN use) -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <div class="container">
@@ -58,6 +62,12 @@
                 
                 <div id="safe-message" class="safe-message hidden">
                     <p>No obvious scam indicators found. However, always exercise caution and verify company details independently.</p>
+                </div>
+
+                <div id="report-container" class="report-container hidden">
+                    <hr>
+                    <p id="report-instruction">Is this a scam? Help others by reporting it to our database.</p>
+                    <button id="report-btn" class="report-btn">Report This Scam</button>
                 </div>
             </div>
         </main>
