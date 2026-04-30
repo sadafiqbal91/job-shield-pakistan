@@ -1,5 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 // Content dictionary for English and Urdu
 const content = {
     en: {
@@ -54,11 +52,6 @@ const firebaseConfig = {
   appId: "1:236422579240:web:63b02d308cf31741d6a11d",
   measurementId: "G-C5KFMG3N8X"
 };
-
-// --- Gemini AI Configuration ---
-const geminiApiKey = "AIzaSyCITT_9HD1Z96wVHO_BdSRZzpH2r_BQKsI";
-const genAI = new GoogleGenerativeAI(geminiApiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -268,21 +261,21 @@ async function analyzeWithAI(text) {
     aiResultText.textContent = "";
 
     try {
-        const prompt = `You are a job scam detector expert in Pakistan. Analyze the following job description and explain why it is likely a scam or if it looks legitimate. 
-        Focus on specific indicators like suspicious payment methods (Easypaisa/JazzCash), unprofessional contact, unrealistic salary, or registration fees.
-        Write your response in 3-4 concise points. 
-        Language of response: ${currentLang === 'en' ? 'English' : 'Roman Urdu'}.
-        
-        Job Description: "${text}"`;
+        const response = await fetch('/.netlify/functions/analyze', {
+            method: 'POST',
+            body: JSON.stringify({ text: text, lang: currentLang }),
+            headers: { 'Content-Type': 'application/json' }
+        });
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const aiResponseText = response.text();
+        if (!response.ok) throw new Error('Backend failed');
+
+        const data = await response.json();
+        const aiResponseText = data.analysis;
 
         aiLoading.classList.add('hidden');
         aiResultText.textContent = aiResponseText;
     } catch (error) {
-        console.error("Gemini AI Error:", error);
+        console.error("AI Analysis Error:", error);
         aiLoading.classList.add('hidden');
         aiResultText.textContent = content[currentLang].aiError;
     }
