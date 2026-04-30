@@ -10,6 +10,15 @@
     <!-- Firebase SDKs (Compat Version for easy CDN use) -->
     <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+
+    <!-- Google Gemini AI SDK -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -64,6 +73,21 @@
                     <p>No obvious scam indicators found. However, always exercise caution and verify company details independently.</p>
                 </div>
 
+                <!-- AI Analysis Section -->
+                <div id="ai-analysis-section" class="ai-analysis-section hidden">
+                    <div class="ai-header">
+                        <span class="ai-icon">✨</span>
+                        <h3 id="ai-title">AI Expert Opinion</h3>
+                    </div>
+                    <div id="ai-loading" class="ai-loading hidden">
+                        <div class="spinner"></div>
+                        <p id="ai-loading-text">Analyzing with AI...</p>
+                    </div>
+                    <div id="ai-result-text" class="ai-result-text">
+                        <!-- AI Response will appear here -->
+                    </div>
+                </div>
+
                 <div id="report-container" class="report-container hidden">
                     <hr>
                     <p id="report-instruction">Is this a scam? Help others by reporting it to our database.</p>
@@ -77,6 +101,6 @@
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

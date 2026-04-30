@@ -1,3 +1,5 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 // Content dictionary for English and Urdu
 const content = {
     en: {
@@ -16,6 +18,9 @@ const content = {
         reportBtn: "Report This Scam",
         reportInstruction: "Is this a scam? Help others by reporting it to our database.",
         reportSuccess: "Thanks! This scam has been reported to our live database.",
+        aiTitle: "AI Expert Opinion",
+        aiLoading: "AI is analyzing the job description...",
+        aiError: "AI analysis failed. Please try again later.",
     },
     ur: {
         tagline: "Jali Job Scam Detector",
@@ -33,6 +38,9 @@ const content = {
         reportBtn: "Is Scam ko Report Karein",
         reportInstruction: "Kya ye ek dhoka hai? Isay database mein report kar ke doosron ki madad karein.",
         reportSuccess: "Shukriya! Ye scam humare live database mein report ho gaya hai.",
+        aiTitle: "AI Expert Ki Raye (Opinion)",
+        aiLoading: "AI analysis kar raha hai, thora intezar karein...",
+        aiError: "AI analysis nakam ho gaya. Baad mein koshish karein.",
     }
 };
 
@@ -46,6 +54,11 @@ const firebaseConfig = {
   appId: "1:236422579240:web:63b02d308cf31741d6a11d",
   measurementId: "G-C5KFMG3N8X"
 };
+
+// --- Gemini AI Configuration ---
+const geminiApiKey = "AIzaSyCITT_9HD1Z96wVHO_BdSRZzpH2r_BQKsI";
+const genAI = new GoogleGenerativeAI(geminiApiKey);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -82,6 +95,12 @@ const reportContainer = document.getElementById('report-container');
 const reportBtn = document.getElementById('report-btn');
 const reportInstruction = document.getElementById('report-instruction');
 
+const aiAnalysisSection = document.getElementById('ai-analysis-section');
+const aiTitle = document.getElementById('ai-title');
+const aiLoading = document.getElementById('ai-loading');
+const aiLoadingText = document.getElementById('ai-loading-text');
+const aiResultText = document.getElementById('ai-result-text');
+
 let currentLang = 'en';
 let lastAnalysis = null; // Store last results to re-render on language switch
 
@@ -113,6 +132,10 @@ function updateLanguage(lang) {
     if (!reportBtn.classList.contains('reported')) {
         reportBtn.textContent = content[lang].reportBtn;
     }
+
+    // Update AI section text
+    aiTitle.textContent = content[lang].aiTitle;
+    aiLoadingText.textContent = content[lang].aiLoading;
 
     // Re-render results if there's an active analysis
     if (lastAnalysis && !resultSection.classList.contains('hidden')) {
@@ -157,6 +180,9 @@ analyzeBtn.addEventListener('click', () => {
     };
 
     renderResults(totalScore, detectedWarnings);
+    
+    // Call Gemini AI for deeper analysis
+    analyzeWithAI(text);
 });
 
 // Render Results
@@ -234,3 +260,30 @@ reportBtn.addEventListener('click', () => {
         alert("Error: Could not save report. Please try again.");
     });
 });
+
+// --- Gemini AI Analysis Function ---
+async function analyzeWithAI(text) {
+    aiAnalysisSection.classList.remove('hidden');
+    aiLoading.classList.remove('hidden');
+    aiResultText.textContent = "";
+
+    try {
+        const prompt = `You are a job scam detector expert in Pakistan. Analyze the following job description and explain why it is likely a scam or if it looks legitimate. 
+        Focus on specific indicators like suspicious payment methods (Easypaisa/JazzCash), unprofessional contact, unrealistic salary, or registration fees.
+        Write your response in 3-4 concise points. 
+        Language of response: ${currentLang === 'en' ? 'English' : 'Roman Urdu'}.
+        
+        Job Description: "${text}"`;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const aiResponseText = response.text();
+
+        aiLoading.classList.add('hidden');
+        aiResultText.textContent = aiResponseText;
+    } catch (error) {
+        console.error("Gemini AI Error:", error);
+        aiLoading.classList.add('hidden');
+        aiResultText.textContent = content[currentLang].aiError;
+    }
+}
