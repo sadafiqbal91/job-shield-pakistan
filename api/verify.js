@@ -5,10 +5,15 @@ module.exports = async (req, res) => {
     const { text, lang } = req.body;
     const apiKey = (process.env.GEMINI_API_KEY || "").trim();
 
-    if (!apiKey) return res.status(500).json({ error: "Key not found in Vercel settings" });
+    if (!apiKey) return res.status(500).json({ error: "Key not found" });
+
+    // 1. Try to list models first to see what this key can actually do
+    const listResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+    const listData = await listResponse.json();
 
     const prompt = `Analyze this job description for scams in Pakistan. Answer in 3 points. Language: ${lang === 'en' ? 'English' : 'Roman Urdu'}. Text: "${text}"`;
 
+    // 2. Try the analysis
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -21,7 +26,8 @@ module.exports = async (req, res) => {
       return res.status(200).json({ analysis: data.candidates[0].content.parts[0].text });
     } else {
       return res.status(500).json({ 
-        error: "Google Rejected", 
+        error: "Google Rejecting", 
+        availableModels: listData.models ? listData.models.map(m => m.name) : "No models found",
         details: data.error ? data.error.message : JSON.stringify(data) 
       });
     }
