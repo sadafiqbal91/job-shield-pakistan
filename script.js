@@ -261,7 +261,7 @@ async function analyzeWithAI(text) {
     aiResultText.textContent = "";
 
     try {
-        const response = await fetch('/api/analyze', {
+        const response = await fetch('/api/verify', {
             method: 'POST',
             body: JSON.stringify({ text: text, lang: currentLang }),
             headers: { 'Content-Type': 'application/json' }
