@@ -267,10 +267,13 @@ async function analyzeWithAI(text) {
             headers: { 'Content-Type': 'application/json' }
         });
 
-        if (!response.ok) throw new Error('Backend failed');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.details || errorData.error || 'Backend crash');
+        }
 
         const data = await response.json();
-        const aiResponseText = data.analysis || `Error: ${data.details || 'Unknown error'}`;
+        const aiResponseText = data.analysis;
 
         aiLoading.classList.add('hidden');
         aiResultText.textContent = aiResponseText;
