@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Job Scam Detector for Pakistan",
   "main": "script.js",
-  "dependencies": {
-    "@google/generative-ai": "^0.11.1"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
