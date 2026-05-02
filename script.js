@@ -261,7 +261,7 @@ async function analyzeWithAI(text) {
     aiResultText.textContent = "";
 
     try {
-        const response = await fetch('/.netlify/functions/analyze', {
+        const response = await fetch('/api/analyze', {
             method: 'POST',
             body: JSON.stringify({ text: text, lang: currentLang }),
             headers: { 'Content-Type': 'application/json' }
