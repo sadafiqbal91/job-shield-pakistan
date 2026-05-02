@@ -9,11 +9,11 @@ module.exports = async (req, res) => {
 
     const prompt = `Analyze this job description for scams in Pakistan. Answer in 3 short points. Language: ${lang === 'en' ? 'English' : 'Roman Urdu'}. Text: "${text}"`;
 
-    // Try multiple combinations of version and model
+    // Try the most modern and most stable combinations
     const attempts = [
+      { ver: 'v1beta', mod: 'gemini-1.5-flash-latest' },
       { ver: 'v1beta', mod: 'gemini-1.5-flash' },
-      { ver: 'v1', mod: 'gemini-pro' },
-      { ver: 'v1beta', mod: 'gemini-pro' }
+      { ver: 'v1', mod: 'gemini-pro' }
     ];
 
     let lastError = "";
