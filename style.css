@@ -1,19 +1,19 @@
 :root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --bg-color: #f8fafc;
-    --card-bg: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --bg-color: #0f172a;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.1);
     
     /* Risk Colors */
     --safe-color: #10b981;
-    --safe-bg: #d1fae5;
+    --safe-bg: rgba(16, 185, 129, 0.2);
     --warning-color: #f59e0b;
-    --warning-bg: #fef3c7;
+    --warning-bg: rgba(245, 158, 11, 0.2);
     --danger-color: #ef4444;
-    --danger-bg: #fee2e2;
+    --danger-bg: rgba(239, 68, 68, 0.2);
 }
 
 * {
@@ -26,12 +26,15 @@
 body {
     background-color: var(--bg-color);
     background-image: 
-        radial-gradient(at 40% 20%, hsla(228,100%,74%,0.15) 0px, transparent 50%),
-        radial-gradient(at 80% 0%, hsla(189,100%,56%,0.15) 0px, transparent 50%),
-        radial-gradient(at 0% 50%, hsla(150,100%,80%,0.15) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+        radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+        radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%),
+        radial-gradient(at 0% 100%, hsla(225,39%,20%,1) 0, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(339,49%,20%,1) 0, transparent 50%);
     background-attachment: fixed;
     color: var(--text-main);
     line-height: 1.6;
+    min-height: 100vh;
 }
 
 .container {
@@ -98,10 +101,12 @@ h1 {
 /* Info Card */
 .info-card {
     background: var(--card-bg);
-    padding: 1rem;
-    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     color: var(--text-muted);
     font-size: 0.95rem;
 }
@@ -117,19 +122,22 @@ h1 {
 
 textarea {
     width: 100%;
-    padding: 1rem;
+    padding: 1.5rem;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
     font-size: 1rem;
     resize: vertical;
+    transition: all 0.3s ease;
+    outline: none;
     margin-bottom: 1rem;
-    transition: border-color 0.2s;
 }
 
 textarea:focus {
-    outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .action-buttons {
@@ -188,7 +196,12 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
 }
 
 .risk-badge {
