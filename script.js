@@ -269,8 +269,7 @@ async function analyzeWithAI(text) {
 
         if (!response.ok) {
             const errorData = await response.json();
-            const diagInfo = errorData.availableModels ? `\nAvailable Models: ${JSON.stringify(errorData.availableModels)}` : '';
-            throw new Error((errorData.details || errorData.error || 'Backend crash') + diagInfo);
+            throw new Error(errorData.details || errorData.error || 'AI analysis failed. Please try again later.');
         }
 
         const data = await response.json();

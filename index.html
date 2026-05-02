@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobShield Pakistan v2.0 - AI Scam Detector</title>
+    <title>JobShield Pakistan - Fake Job Scam Detector</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Firebase SDKs (Compat Version for easy CDN use) -->
     <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
@@ -20,6 +21,7 @@
       }
     </script>
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -38,11 +40,13 @@
 
         <main>
             <div class="info-card">
-                <p id="instruction-text">Paste any job advertisement text or message below. Our system will analyze it for common scam indicators in Pakistan.</p>
+                <p id="instruction-text">Paste any job advertisement text or message below. Our system will analyze it
+                    for common scam indicators in Pakistan.</p>
             </div>
 
             <div class="input-section">
-                <textarea id="job-text" placeholder="Paste the job description or WhatsApp message here..." rows="8"></textarea>
+                <textarea id="job-text" placeholder="Paste the job description or WhatsApp message here..."
+                    rows="8"></textarea>
                 <div class="action-buttons">
                     <button id="analyze-btn" class="primary-btn">Analyze Job Ad</button>
                     <button id="clear-btn" class="secondary-btn">Clear</button>
@@ -54,7 +58,7 @@
                     <h2 id="result-title">Analysis Result</h2>
                     <div id="risk-badge" class="risk-badge"></div>
                 </div>
-                
+
                 <div class="score-container">
                     <div class="progress-bar">
                         <div id="score-fill" class="score-fill"></div>
@@ -68,9 +72,10 @@
                         <!-- Warnings will be injected here -->
                     </ul>
                 </div>
-                
+
                 <div id="safe-message" class="safe-message hidden">
-                    <p>No obvious scam indicators found. However, always exercise caution and verify company details independently.</p>
+                    <p>No obvious scam indicators found. However, always exercise caution and verify company details
+                        independently.</p>
                 </div>
 
                 <!-- AI Analysis Section -->
@@ -95,12 +100,13 @@
                 </div>
             </div>
         </main>
-        
+
         <footer>
             <p>Built for the community. Stay safe from online fraud.</p>
         </footer>
     </div>
 
-    <script type="module" src="script.js?v=2"></script>
+    <script type="module" src="script.js"></script>
 </body>
+
 </html>

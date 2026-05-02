@@ -5,15 +5,10 @@ module.exports = async (req, res) => {
     const { text, lang } = req.body;
     const apiKey = (process.env.GEMINI_API_KEY || "").trim();
 
-    if (!apiKey) return res.status(500).json({ error: "Key not found" });
+    if (!apiKey) return res.status(500).json({ error: "Configuration Error" });
 
-    // 1. Try to list models first to see what this key can actually do
-    const listResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    const listData = await listResponse.json();
+    const prompt = `Analyze this job description for scams in Pakistan. Answer in 3 clear points. Language: ${lang === 'en' ? 'English' : 'Roman Urdu'}. Text: "${text}"`;
 
-    const prompt = `Analyze this job description for scams in Pakistan. Answer in 3 points. Language: ${lang === 'en' ? 'English' : 'Roman Urdu'}. Text: "${text}"`;
-
-    // 2. Try the analysis
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -25,14 +20,10 @@ module.exports = async (req, res) => {
     if (data.candidates && data.candidates[0].content) {
       return res.status(200).json({ analysis: data.candidates[0].content.parts[0].text });
     } else {
-      return res.status(500).json({ 
-        error: "Google Rejecting", 
-        availableModels: listData.models ? listData.models.map(m => m.name) : "No models found",
-        details: data.error ? data.error.message : JSON.stringify(data) 
-      });
+      return res.status(500).json({ error: "AI Analysis failed", details: "Please try again later." });
     }
 
   } catch (error) {
-    return res.status(500).json({ error: "Server Error", details: error.message });
+    return res.status(500).json({ error: "Server Error" });
   }
 };
