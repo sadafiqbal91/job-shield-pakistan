@@ -301,6 +301,22 @@ button {
     text-align: center;
 }
 
+.clear-btn {
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #fff;
+}
+
 .report-btn {
     width: 100%;
     background: #000;
