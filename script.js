@@ -269,7 +269,8 @@ async function analyzeWithAI(text) {
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.details || errorData.error || 'Backend crash');
+            const diagInfo = errorData.keyUsed ? `\n(Key: ${errorData.keyUsed})\n(Google Msg: ${JSON.stringify(errorData.googleResponse)})` : '';
+            throw new Error((errorData.details || errorData.error || 'Backend crash') + diagInfo);
         }
 
         const data = await response.json();
