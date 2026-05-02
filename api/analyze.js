@@ -39,6 +39,9 @@ module.exports = async (req, res) => {
 
   } catch (error) {
     console.error("Error in AI Analysis:", error);
-    return res.status(500).json({ error: "Failed to analyze text" });
+    return res.status(500).json({ 
+      error: "Failed to analyze text", 
+      details: error.message 
+    });
   }
 };

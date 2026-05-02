@@ -270,13 +270,13 @@ async function analyzeWithAI(text) {
         if (!response.ok) throw new Error('Backend failed');
 
         const data = await response.json();
-        const aiResponseText = data.analysis;
+        const aiResponseText = data.analysis || `Error: ${data.details || 'Unknown error'}`;
 
         aiLoading.classList.add('hidden');
         aiResultText.textContent = aiResponseText;
     } catch (error) {
         console.error("AI Analysis Error:", error);
         aiLoading.classList.add('hidden');
-        aiResultText.textContent = content[currentLang].aiError;
+        aiResultText.textContent = `${content[currentLang].aiError} (${error.message})`;
     }
 }
