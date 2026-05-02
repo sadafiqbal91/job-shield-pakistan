@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "JobShield Pakistan AI",
+  "version": "1.0",
+  "description": "AI-powered job scam detector for Pakistan.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab"]
+}
