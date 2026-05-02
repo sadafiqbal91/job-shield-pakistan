@@ -29,12 +29,12 @@ module.exports = async (req, res) => {
 
     const data = await response.json();
     
-    if (data.candidates && data.candidates[0].content.parts[0].text) {
+    if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
       const aiText = data.candidates[0].content.parts[0].text;
       return res.status(200).json({ analysis: aiText });
     } else {
-      console.error("Gemini API Error:", data);
-      throw new Error("Invalid response from Gemini");
+      const errorMsg = data.error ? data.error.message : (data.promptFeedback ? "Blocked by safety filters" : JSON.stringify(data));
+      throw new Error(`Google API: ${errorMsg}`);
     }
 
   } catch (error) {
