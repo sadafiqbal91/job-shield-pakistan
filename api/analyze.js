@@ -13,8 +13,8 @@ module.exports = async (req, res) => {
 
     const prompt = `Analyze this job description for scams in Pakistan. Answer in 3 points. Language: ${lang === 'en' ? 'English' : 'Roman Urdu'}. Text: "${text}"`;
 
-    // Standard v1 endpoint with gemini-1.5-flash
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // The most stable model: gemini-pro on v1
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
