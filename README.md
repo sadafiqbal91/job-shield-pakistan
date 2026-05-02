@@ -22,6 +22,12 @@ Check out the live application here: [https://job-shield-pakistan.vercel.app](ht
 ## 🛡️ Privacy & Safety
 JobShield does not store personal information from analyzed texts. It is built as a community tool to help Pakistanis stay safe in the digital job market.
 
+## 📊 Usage Limits (Quota)
+This is a **100% Free Tool**. To keep it free, we use a shared quota:
+- **Capacity:** ~15 analysis requests per minute.
+- **If you get an error:** If many people use it at once, you might see a "Quota Exceeded" message.
+- **Solution:** Just wait for **1 minute** and try again (similar to how ChatGPT works sometimes).
+
 ## 👨‍💻 Developer
 Built with ❤️ for Pakistan.
 
